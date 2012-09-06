@@ -1,0 +1,3 @@
+define({
+  type: 'Jeans'
+});
