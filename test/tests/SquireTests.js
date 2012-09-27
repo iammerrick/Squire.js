@@ -34,6 +34,8 @@ define(['Squire'], function(Squire) {
             Formal.shirt.color.should.equal('Blue');
             done();
           });
+          
+        squire.remove();
       });
       
       it('should mock one of multiple dependencies', function(done) {

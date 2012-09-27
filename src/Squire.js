@@ -103,6 +103,7 @@ define(function() {
     var path;
     
     if (mock && typeof mock === 'string') {
+      requirejs.s.contexts[this.id].undef(mock);
       delete requirejs.s.contexts[this.id].defined[mock];
       delete this.mocks[mock];
     } else if(mock && typeof mock === 'array') {
@@ -119,7 +120,10 @@ define(function() {
   };
   
   Squire.prototype.remove = function() {
-    requirejs.s.contexts[this.id] = undefined;
+    var path;
+    for (path in requirejs.s.contexts[this.id].defined) {
+      requirejs.s.contexts[this.id].undef(path);
+    }
     delete requirejs.s.contexts[this.id];
   };
   
