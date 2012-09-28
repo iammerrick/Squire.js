@@ -88,6 +88,21 @@ define(['Squire'], function(Squire) {
           });
       });
       
+      it('should allow a function as a dependency', function(done) {
+        var squire = new Squire();
+        squire
+          .mock('mocks/Shirt', function() {
+            return function() {
+              return 'Winter Blue';
+            };
+          })
+          .require(['mocks/Outfit'], function(Outfit) {
+            Outfit.shirt().should.equal('Winter Blue');
+            done();
+          });
+          
+      });
+      
       it('should mock my cjs dependency', function(done) {
         var squire = new Squire();
         squire
@@ -111,7 +126,7 @@ define(['Squire'], function(Squire) {
           .require(['mocks/CJSOutfit'], function(Outfit) {
             require(['mocks/CJSOutfit'], function(NotTheMock) {
               NotTheMock.shirt.color.should.equal('Red');
-              done()
+              done();
             });
           });
       });
