@@ -1,3 +1,4 @@
+/*jshint expr:true */
 define(['Squire'], function(Squire) {
   describe('Squire', function() {
     describe('constructor', function() {
@@ -32,6 +33,22 @@ define(['Squire'], function(Squire) {
           })
           .require(['mocks/Formal'], function(Formal) {
             Formal.shirt.color.should.equal('Blue');
+            done();
+          });
+          
+        squire.remove();
+      });
+      
+      it('should throw errors from the proper stack', function(done) {
+        // Formal.shirt.irrelevant.should.exist;
+        var squire = new Squire();
+        squire
+          .mock(['mocks/Shirt'], {
+            color: 'Blue',
+            size: 'Unknown'
+          })
+          .require(['mocks/Formal'], function(Formal) {
+            Formal.shirt.irrelevant.should.exist;
             done();
           });
           
