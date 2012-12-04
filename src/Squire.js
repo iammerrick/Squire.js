@@ -36,7 +36,7 @@ define(function() {
     }
     
     for (property in context.config) {
-      if(context.config.hasOwnProperty(property)) {
+      if(context.config.hasOwnProperty(property) && property !== 'deps') {
         configuration[property] = context.config[property];
       }
     }
