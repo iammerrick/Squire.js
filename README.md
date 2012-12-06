@@ -1,6 +1,6 @@
-Squire.js is a dependency injector for Require.js users to make mocking dependencies easy!
-
 # Squire.js
+
+Squire.js is a dependency injector for Require.js users to make mocking dependencies easy!
 
 ![Squire.js - The Squire](http://f.cl.ly/items/2e3f3x3b0K132R3c2t06/squire.png)
 
