@@ -28,7 +28,7 @@ var injector = new Squire('other-requirejs-context');
 
 ```javascript
 var injector = new Squire();
-injector.require(['utilities/Calculator], function(Calculator) {
+injector.require(['utilities/Calculator'], function(Calculator) {
   // Calculator has been loaded.
 });
 ```
