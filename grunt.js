@@ -35,7 +35,9 @@ module.exports = function(grunt) {
         requirejs: true,
         require: true,
         describe: true,
-        it: true
+        it: true,
+        mocha: true,
+        chai: true
       }
     },
     mocha: {
