@@ -3,5 +3,6 @@ requirejs.config({
   paths: {
     tests: '../test/tests',
     mocks: '../test/mocks'
-  }
+  },
+  deps: ['tests/DepsRun']
 });

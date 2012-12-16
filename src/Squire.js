@@ -36,7 +36,7 @@ define(function() {
     }
     
     for (property in context.config) {
-      if(context.config.hasOwnProperty(property)) {
+      if(property !== 'deps' && context.config.hasOwnProperty(property)) {
         configuration[property] = context.config[property];
       }
     }
@@ -44,7 +44,6 @@ define(function() {
     configuration.context = this.id;
     
     this.load = requirejs.config(configuration);
-    
   };
   
   Squire.prototype.mock = function(path, mock) {
