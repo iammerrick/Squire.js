@@ -39,22 +39,6 @@ define(['Squire'], function(Squire) {
         squire.remove();
       });
       
-      it('should throw errors from the proper stack', function(done) {
-        // Formal.shirt.irrelevant.should.exist;
-        var squire = new Squire();
-        squire
-          .mock(['mocks/Shirt'], {
-            color: 'Blue',
-            size: 'Unknown'
-          })
-          .require(['mocks/Formal'], function(Formal) {
-            Formal.shirt.irrelevant.should.exist;
-            done();
-          });
-          
-        squire.remove();
-      });
-      
       it('should mock one of multiple dependencies', function(done) {
         var squire = new Squire();
         squire
