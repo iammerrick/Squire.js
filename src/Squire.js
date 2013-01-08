@@ -52,8 +52,9 @@ define(function() {
       for (alias in path) {
         this.mock(alias, path[alias]);
       }
+    } else {
+      this.mocks[path] = mock;
     }
-    this.mocks[path] = mock;
     
     return this;
   };
@@ -77,6 +78,17 @@ define(function() {
     for (path in this.mocks) {
       // Require.js code to the next require.
       define(path, this.mocks[path]);
+
+      // Wrap the mock in a function, to be able to use a function for a mock.
+      // If the function you want to use for a mock isn't wrapped in another function,
+      // Require.js automatically invokes your mock function.
+      var mockModule = function(path) {
+        return function() { 
+          return self.mocks[path];
+        };
+      }
+
+      define(path, mockModule(path));
     }
     
     this.load(dependencies, function() {
