@@ -6,7 +6,7 @@ define(['Squire'], function(Squire) {
         var squireInstance = new Squire();
         squireInstance.should.be.an.instanceof(Squire);
       });
-            
+
       it('should throw an error if a context doesn\'t exist', function() {
         var create = function() {
           new Squire('not-real');
@@ -14,7 +14,7 @@ define(['Squire'], function(Squire) {
         create.should.Throw();
       });
     });
-    
+
     describe('require', function() {
       it('should require my specified dependencies', function(done) {
         var squire = new Squire();
@@ -23,7 +23,7 @@ define(['Squire'], function(Squire) {
           done();
         });
       });
-      
+
       it('should require a relative module', function(done) {
         var squire = new Squire();
         squire
@@ -35,10 +35,10 @@ define(['Squire'], function(Squire) {
             Formal.shirt.color.should.equal('Blue');
             done();
           });
-          
+
         squire.remove();
       });
-      
+
       it('should mock one of multiple dependencies', function(done) {
         var squire = new Squire();
         squire
@@ -51,7 +51,7 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
-      
+
       it('should return my mocks to me using a magic module', function(done) {
         var squire = new Squire();
         squire
@@ -63,7 +63,7 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
-      
+
       it('should return my dependencies to me using a magic module', function(done) {
         var squire = new Squire();
         squire
@@ -73,8 +73,17 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
+
+      it('should call any onRequired hooks', function(done) {
+        var squire = new Squire();
+        squire.onRequired(function() {
+          done();
+        });
+
+        squire.require(['mocks/Shirt'], function (shirt) {});
+      });
     });
-    
+
     describe('mock', function() {
       it('should mock my dependency', function(done) {
         var squire = new Squire();
@@ -88,7 +97,7 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
-      
+
       it('should allow a function as a dependency', function(done) {
         var squire = new Squire();
         squire
@@ -101,9 +110,9 @@ define(['Squire'], function(Squire) {
             Outfit.shirt().should.equal('Winter Blue');
             done();
           });
-          
+
       });
-      
+
       it('should mock my cjs dependency', function(done) {
         var squire = new Squire();
         squire
@@ -116,7 +125,7 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
-      
+
       it('should not mock the dependency for other requires', function(done) {
         var squire = new Squire();
         squire
@@ -131,7 +140,7 @@ define(['Squire'], function(Squire) {
             });
           });
       });
-      
+
       it('should accept and object literal as an argument', function(done) {
         var squire = new Squire();
         squire
@@ -147,28 +156,28 @@ define(['Squire'], function(Squire) {
           });
       });
     });
-    
+
     describe('shared squire', function() {
       var squire = new Squire();
       squire.mock('mocks/Shirt', {
         color: 'Green',
         size: 'XLarge'
       });
-      
+
       it('should have a Green shirt', function(done) {
         squire.require(['mocks/Outfit'], function(Outfit) {
           Outfit.shirt.color.should.equal('Green');
           done();
         });
       });
-      
+
       it('should have an XLarge shirt size', function(done) {
         squire.require(['mocks/Formal'], function(Outfit) {
           Outfit.shirt.size.should.equal('XLarge');
           done();
         });
       });
-      
+
       it('should clean up the mocks if asked', function(done) {
         squire.clean();
         squire.require(['mocks/Shirt'], function(Shirt) {
@@ -176,7 +185,7 @@ define(['Squire'], function(Squire) {
           done();
         });
       });
-      
+
       it('should allow me to mock after a clean', function(done) {
         squire.clean();
         squire
@@ -190,7 +199,7 @@ define(['Squire'], function(Squire) {
           });
       });
     });
-    
+
     describe('clean', function() {
       it('should not mock the requested module', function(done) {
         var squire = new Squire();
@@ -198,7 +207,7 @@ define(['Squire'], function(Squire) {
           color: 'Clear',
           size: '?'
         });
-        
+
         squire
           .clean('mocks/Shirt')
           .require(['mocks/Outfit'], function(Outfit) {
@@ -206,28 +215,28 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
-      
+
       it('should remove all mocks when called without args', function(done) {
         var squire = new Squire();
         squire.mock('mocks/Shirt', {
           color: 'Sky Blue'
         });
         squire.clean();
-        
+
         squire.require(['mocks/Shirt'], function(Shirt) {
           Shirt.color.should.equal('Red');
           done();
         });
-        
+
       });
-      
+
       it('should not mock the requested module by array', function(done) {
         var squire = new Squire();
         squire.mock('mocks/Shirt', {
           color: 'Clear',
           size: '?'
         });
-        
+
         squire
           .clean(['mocks/Shirt'])
           .require(['mocks/Outfit'], function(Outfit) {
@@ -236,6 +245,6 @@ define(['Squire'], function(Squire) {
           });
       });
     });
-    
+
   });
 });
