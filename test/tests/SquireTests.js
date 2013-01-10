@@ -82,6 +82,22 @@ define(['Squire'], function(Squire) {
 
         squire.require(['mocks/Shirt'], function (shirt) {});
       });
+      
+      it('should call onRequired hooks with the proper arguments', function(done) {
+        var squire = new Squire();
+        squire.onRequired(function(dependencies, values) {
+          dependencies.should.deep.equal(['mocks/Shirt']);
+          
+          values.should.deep.equal([{
+            color: 'Red',
+            size: 'Large'
+          }]);
+          
+          done();
+        });
+      
+        squire.require(['mocks/Shirt'], function (shirt) {});
+      });
     });
 
     describe('mock', function() {

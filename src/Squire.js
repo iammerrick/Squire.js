@@ -20,7 +20,7 @@ define(function() {
    */
   Squire.prototype.onRequired = function(cb) {
     this.requiredCallbacks.push(cb);
-  }
+  };
 
   /**
    * Configuration of Squire.js, called from constructor or manually takes the
@@ -89,6 +89,7 @@ define(function() {
 
     this.load(dependencies, function() {
       var store = {};
+      var args = arguments;
       var dependency;
 
       if (~magicModuleLocation) {
@@ -96,15 +97,16 @@ define(function() {
           store[self._store[dependency]] = requirejs.s.contexts[self.id].defined[self._store[dependency]];
         }
 
-        Array.prototype.splice.call(arguments, magicModuleLocation, 0, {
+        Array.prototype.splice.call(args, magicModuleLocation, 0, {
           mocks: self.mocks,
           store: store
         });
       }
 
-      callback.apply(null, arguments);
+      callback.apply(null, args);
+      
       self.requiredCallbacks.forEach(function(cb) {
-        cb();
+        cb.call(null, dependencies, args);
       });
     });
   };
