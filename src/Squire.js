@@ -1,4 +1,14 @@
 define(function() {
+  
+  /**
+   * Utility Functions
+   */
+   
+  var toString = Object.prototype.toString;
+  var isArray = function(arr) {
+    return toString.call(arr) === '[object Array]';
+  };
+  
   /**
    * Create a context name incrementor.
    */
@@ -69,7 +79,7 @@ define(function() {
   Squire.prototype.store = function(path) {
     if (path && typeof path === 'string') {
       this._store.push(path);
-    } else if(path && Object.prototype.toString.apply(path) === '[object Array]') {
+    } else if(path && isArray(path)) {
       for (var i = 0; i < path.length; i++) {
           this.store(path[i]);
       }
@@ -124,7 +134,7 @@ define(function() {
       requirejs.s.contexts[this.id].undef(mock);
       delete requirejs.s.contexts[this.id].defined[mock];
       delete this.mocks[mock];
-    } else if(mock && Object.prototype.toString.apply(mock) === '[object Array]') {
+    } else if(mock && isArray(mock)) {
       for (var i = 0; i < mock.length; i++) {
         this.clean(mock[i]);
       }
