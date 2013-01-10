@@ -67,7 +67,7 @@ var injector = new Squire();
 injector
   .store('CrazyCalculatorDependency')
   .require(['utilities/Calculator', 'mocks'], function(Calculator, mocks) {
-    // mocks.CrazyCalculatorDependency is the Calculators dependency, you can
+    // mocks.store.CrazyCalculatorDependency is the Calculators dependency, you can
     // manipulate it or stub it with Sinon now.
   });
 ```
