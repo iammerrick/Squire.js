@@ -59,7 +59,13 @@ define(function() {
   };
   
   Squire.prototype.store = function(path) {
-    this._store.push(path);
+    if (path && typeof path === 'string') {
+      this._store.push(path);
+    } else if(path && Object.prototype.toString.apply(path) === '[object Array]') {
+      for (var i = 0; i < path.length; i++) {
+          this.store(path[i]);
+      }
+    }
     return this;
   };
   
@@ -105,9 +111,9 @@ define(function() {
       requirejs.s.contexts[this.id].undef(mock);
       delete requirejs.s.contexts[this.id].defined[mock];
       delete this.mocks[mock];
-    } else if(mock && typeof mock === 'array') {
-      for (path in mock) {
-        this.clean(path);
+    } else if(mock && Object.prototype.toString.apply(mock) === '[object Array]') {
+      for (var i = 0; i < mock.length; i++) {
+        this.clean(mock[i]);
       }
     } else {
       for (path in this.mocks) {
