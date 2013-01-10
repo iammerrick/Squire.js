@@ -105,7 +105,7 @@ define(function() {
 
     this.load(dependencies, function() {
       var store = {};
-      var args = arguments;
+      var args = Array.prototype.slice.call(arguments);
       var dependency;
 
       if (~magicModuleLocation) {
@@ -113,7 +113,7 @@ define(function() {
           store[self._store[dependency]] = requirejs.s.contexts[self.id].defined[self._store[dependency]];
         }
 
-        Array.prototype.splice.call(args, magicModuleLocation, 0, {
+        args.splice(magicModuleLocation, 0, {
           mocks: self.mocks,
           store: store
         });

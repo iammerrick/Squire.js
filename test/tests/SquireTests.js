@@ -86,6 +86,10 @@ define(['Squire'], function(Squire) {
       it('should call onRequired hooks with the proper arguments', function(done) {
         var squire = new Squire();
         squire.onRequired(function(dependencies, values) {
+          
+          dependencies.should.be.an('array');
+          values.should.be.an('array');
+          
           dependencies.should.deep.equal(['mocks/Shirt']);
           
           values.should.deep.equal([{
