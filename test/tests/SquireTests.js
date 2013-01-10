@@ -63,18 +63,28 @@ define(['Squire'], function(Squire) {
             done();
           });
       });
-      
-      it('should return my dependencies to me using a magic module', function(done) {
-        var squire = new Squire();
-        squire
-          .store('mocks/Shirt')
-          .require(['mocks/Outfit', 'mocks'], function(Outfit, mocks) {
-            mocks.store['mocks/Shirt'].color.should.equal('Red');
-            done();
-          });
-      });
     });
-    
+    describe('store', function(){
+        it('should store the requested module', function(done){
+          var squire = new Squire();
+          squire
+            .store('mocks/Shirt')
+            .require(['mocks/Outfit', 'mocks'], function(Outfit, mocks){
+                mocks.store['mocks/Shirt'].color.should.equal('Red');
+                done();
+            });
+        });
+        it('should store all modules by array', function(done){
+          var squire = new Squire();
+          squire
+            .store(['mocks/Shirt','mocks/Pant'])
+            .require(['mocks/FullyDressed', 'mocks'], function(FullyDressed, mocks){
+                mocks.store['mocks/Shirt'].should.not.be.null;
+                mocks.store['mocks/Pant'].should.not.be.null;
+                done();
+            });
+        });
+    });
     describe('mock', function() {
       it('should mock my dependency', function(done) {
         var squire = new Squire();
@@ -227,11 +237,15 @@ define(['Squire'], function(Squire) {
           color: 'Clear',
           size: '?'
         });
+        squire.mock('mocks/Pant', {
+            type: 'Cowboy',
+        });
         
         squire
           .clean(['mocks/Shirt'])
-          .require(['mocks/Outfit'], function(Outfit) {
-            Outfit.shirt.color.should.equal('Red');
+          .require(['mocks/FullyDressed'], function(FullyDressed) {
+            FullyDressed.shirt.color.should.equal('Red');
+            FullyDressed.pant.type.should.equal('Cowboy');
             done();
           });
       });
