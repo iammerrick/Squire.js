@@ -1,6 +1,6 @@
 {
   "name": "Squire.js",
-  "dependencies": {
+  "devDependencies": {
     "grunt-mocha": "~0.1.3"
   },
   "version": "0.1.0",
