@@ -154,6 +154,22 @@ define(function() {
     }
     delete requirejs.s.contexts[this.id];
   };
+  
+  Squire.prototype.run = function(deps, callback) {
+    var self = this;
+    var run = function(done) {
+      self.require(deps, function() {
+        callback.apply(null, arguments);
+        done();
+      });      
+    };
+    
+    run.toString = function() {
+      return callback.toString();
+    };
+    
+    return run;
+  };
 
   return Squire;
 });
