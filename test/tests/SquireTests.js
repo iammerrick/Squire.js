@@ -14,8 +14,16 @@ define(['Squire'], function(Squire) {
         create.should.Throw();
       });
     });
+    
+    describe('run', function() {
+      var instance = new Squire();
+      it('should execute this test using run', instance.run(['mocks/Shirt'], function(Shirt) {
+        Shirt.color.should.equal('Red');
+      }));
+    });
 
     describe('require', function() {
+      
       it('should require my specified dependencies', function(done) {
         var squire = new Squire();
         squire.require(['mocks/Shirt'], function(Shirt) {
