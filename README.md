@@ -100,3 +100,13 @@ Remove all the dependencies loaded by this instance of Squire.
 ```javascript
 injector.remove();
 ```
+
+### run()
+
+Run generates a function that will receive a done callback and execute it after your test function is complete. Particularly useful for frameworks where asynchrony is handled with a callback. Here is an example with Mocha.js. Jasmine can offer this callback approach using [Jasmin.Async](http://lostechies.com/derickbailey/2012/08/18/jasmine-async-making-asynchronous-testing-with-jasmine-suck-less/).
+
+```javascript
+it('should execute this test using run', injector.run(['mocks/Shirt'], function(Shirt) {
+  Shirt.color.should.equal('Red');
+}));
+```
