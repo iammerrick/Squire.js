@@ -5,9 +5,43 @@ define(function() {
    */
    
   var toString = Object.prototype.toString;
+  
   var isArray = function(arr) {
     return toString.call(arr) === '[object Array]';
   };
+  
+  var indexOf = function(arr, search) {
+    for (var i = 0, length = arr.length; i < length; i++) {
+      if (arr[i] === search) {
+        return i;
+      }
+    }
+    
+    return -1;
+  };
+  
+  var each = function(obj, iterator, context) {
+    var breaker = {};
+    
+    if (obj == null) return;
+    if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
+      obj.forEach(iterator, context);
+    } else if (obj.length === +obj.length) {
+      for (var i = 0, l = obj.length; i < l; i++) {
+        if (iterator.call(context, obj[i], i, obj) === breaker) return;
+      }
+    } else {
+      for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          if (iterator.call(context, obj[key], key, obj) === breaker) return;
+        }
+      }
+    }
+  };
+  
+  var getContext = function(id) {
+    return requirejs.s.contexts[id];
+  }
   
   /**
    * Create a context name incrementor.
@@ -47,17 +81,17 @@ define(function() {
       context = '_'; // Default require.js context
     }
 
-    context = requirejs.s.contexts[context];
+    context = getContext(context);
 
     if ( ! context) {
       throw new Error('This context has not been created!');
     }
 
-    for (property in context.config) {
-      if(property !== 'deps' && context.config.hasOwnProperty(property)) {
-        configuration[property] = context.config[property];
+    each(context.config, function(property, key) {
+      if (key !== 'deps') {
+        configuration[key] = property;
       }
-    }
+    });
 
     configuration.context = this.id;
 
@@ -67,9 +101,9 @@ define(function() {
   Squire.prototype.mock = function(path, mock) {
     var alias;
     if (typeof path === 'object') {
-      for (alias in path) {
-        this.mock(alias, path[alias]);
-      }
+      each(path, function(alias, key) {
+        this.mock(key, alias);
+      }, this);
     }
     this.mocks[path] = mock;
 
@@ -80,9 +114,9 @@ define(function() {
     if (path && typeof path === 'string') {
       this._store.push(path);
     } else if(path && isArray(path)) {
-      for (var i = 0; i < path.length; i++) {
-          this.store(path[i]);
-      }
+      each(path, function(pathToStore) {
+        this.store(pathToStore);
+      }, this);
     }
     return this;
   };
@@ -92,26 +126,25 @@ define(function() {
     var self = this;
     var path, magicModuleLocation;
 
-    magicModuleLocation = dependencies.indexOf(magicModuleName);
+    magicModuleLocation = indexOf(dependencies, magicModuleName);
 
-    if (~magicModuleLocation) {
+    if (magicModuleLocation !== -1) {
       dependencies.splice(magicModuleLocation, 1);
     }
-
-    for (path in this.mocks) {
-      // Require.js code to the next require.
-      define(path, this.mocks[path]);
-    }
+    
+    each(this.mocks, function(mock, path) {
+      define(path, mock);
+    });
 
     this.load(dependencies, function() {
       var store = {};
       var args = Array.prototype.slice.call(arguments);
       var dependency;
 
-      if (~magicModuleLocation) {
-        for (dependency in self._store) {
-          store[self._store[dependency]] = requirejs.s.contexts[self.id].defined[self._store[dependency]];
-        }
+      if (magicModuleLocation !== -1) {
+        each(self._store, function(dependency) {
+          store[dependency] = getContext(self.id).defined[dependency]
+        });
 
         args.splice(magicModuleLocation, 0, {
           mocks: self.mocks,
@@ -121,7 +154,7 @@ define(function() {
 
       callback.apply(null, args);
       
-      self.requiredCallbacks.forEach(function(cb) {
+      each(self.requiredCallbacks, function(cb) {
         cb.call(null, dependencies, args);
       });
     });
@@ -131,17 +164,16 @@ define(function() {
     var path;
 
     if (mock && typeof mock === 'string') {
-      requirejs.s.contexts[this.id].undef(mock);
-      delete requirejs.s.contexts[this.id].defined[mock];
+      getContext(this.id).undef(mock);
       delete this.mocks[mock];
     } else if(mock && isArray(mock)) {
-      for (var i = 0; i < mock.length; i++) {
-        this.clean(mock[i]);
-      }
+      each(mock, function(mockToClean) {
+        this.clean(mockToClean);
+      }, this);
     } else {
-      for (path in this.mocks) {
+      each(this.mocks, function(mock, path){
         this.clean(path);
-      }
+      }, this);
     }
 
     return this;
@@ -149,9 +181,11 @@ define(function() {
 
   Squire.prototype.remove = function() {
     var path;
-    for (path in requirejs.s.contexts[this.id].defined) {
-      requirejs.s.contexts[this.id].undef(path);
-    }
+    
+    each(getContext(this.id).defined, function(dependency, path) {
+      getContext(this.id).undef(path);
+    }, this);
+    
     delete requirejs.s.contexts[this.id];
   };
   
