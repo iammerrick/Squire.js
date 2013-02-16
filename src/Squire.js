@@ -23,17 +23,24 @@ define(function() {
   var each = function(obj, iterator, context) {
     var breaker = {};
     
-    if (obj == null) return;
+    if (obj === null) {
+      return;
+    }
+    
     if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
       obj.forEach(iterator, context);
     } else if (obj.length === +obj.length) {
       for (var i = 0, l = obj.length; i < l; i++) {
-        if (iterator.call(context, obj[i], i, obj) === breaker) return;
+        if (iterator.call(context, obj[i], i, obj) === breaker){
+          return;
+        }
       }
     } else {
       for (var key in obj) {
         if (obj.hasOwnProperty(key)) {
-          if (iterator.call(context, obj[key], key, obj) === breaker) return;
+          if (iterator.call(context, obj[key], key, obj) === breaker) {
+            return;
+          }
         }
       }
     }
@@ -41,7 +48,7 @@ define(function() {
   
   var getContext = function(id) {
     return requirejs.s.contexts[id];
-  }
+  };
   
   /**
    * Create a context name incrementor.
@@ -143,7 +150,7 @@ define(function() {
 
       if (magicModuleLocation !== -1) {
         each(self._store, function(dependency) {
-          store[dependency] = getContext(self.id).defined[dependency]
+          store[dependency] = getContext(self.id).defined[dependency];
         });
 
         args.splice(magicModuleLocation, 0, {
@@ -195,7 +202,7 @@ define(function() {
       self.require(deps, function() {
         callback.apply(null, arguments);
         done();
-      });      
+      });
     };
     
     run.toString = function() {
