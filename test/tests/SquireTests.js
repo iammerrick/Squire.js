@@ -235,19 +235,6 @@ define(['Squire'], function(Squire) {
           done();
         });
       });
-
-      it('should allow me to mock after a clean', function(done) {
-        squire.clean();
-        squire
-          .mock('mocks/Shirt', {
-            color: 'Dragon Print',
-            size: 'Always Too Big'
-          })
-          .require(['mocks/Shirt'], function(Shirt) {
-            Shirt.color.should.equal('Dragon Print');
-            done();
-          });
-      });
     });
 
     describe('clean', function() {
