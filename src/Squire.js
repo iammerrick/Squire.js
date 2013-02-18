@@ -46,8 +46,20 @@ define(function() {
     }
   };
   
+  /**
+   * Require.js Abstractions
+   */
+  
   var getContext = function(id) {
     return requirejs.s.contexts[id];
+  };
+  
+  var undef = function(context, module) {
+    if (context.undef) {
+      return context.undef(module);
+    }
+    
+    return context.require.undef(module);
   };
   
   /**
@@ -171,7 +183,7 @@ define(function() {
     var path;
 
     if (mock && typeof mock === 'string') {
-      getContext(this.id).undef(mock);
+      undef(getContext(this.id), mock);
       delete this.mocks[mock];
     } else if(mock && isArray(mock)) {
       each(mock, function(mockToClean) {
@@ -190,7 +202,7 @@ define(function() {
     var path;
     
     each(getContext(this.id).defined, function(dependency, path) {
-      getContext(this.id).undef(path);
+      undef(getContext(this.id), path);
     }, this);
     
     delete requirejs.s.contexts[this.id];
