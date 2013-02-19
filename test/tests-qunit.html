@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Squire-Qunit</title>
+  <link rel="stylesheet" href="vendor/qunit.css">
+</head>
+<body>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script type="text/javascript" charset="utf-8" src="vendor/require-2.1.4.js"></script>
+  <script src="vendor/qunit.js"></script>
+   <script type="text/javascript">
+    QUnit.config.autostart = false;
+    QUnit.config.testTimeout = 1000;
+    QUnit.stop();
+    require(['config'], function() {
+      require(['tests/SquireQUnitTests'], function() {
+        QUnit.start();
+      });
+    });
+    </script>
+</body>
+</html>

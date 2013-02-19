@@ -211,8 +211,9 @@ define(function() {
   Squire.prototype.run = function(deps, callback) {
     var self = this;
     var run = function(done) {
+      var context = this;
       self.require(deps, function() {
-        callback.apply(null, arguments);
+        callback.apply(context, arguments);
         done();
       });
     };
@@ -220,6 +221,8 @@ define(function() {
     run.toString = function() {
       return callback.toString();
     };
+    
+    run.isSquireCallback = true;
     
     return run;
   };

@@ -110,3 +110,29 @@ it('should execute this test using run', injector.run(['mocks/Shirt'], function(
   Shirt.color.should.equal('Red');
 }));
 ```
+
+
+
+
+
+
+
+### Squire-Qunit 
+
+Squire-Qunit is a small addon to qunit to make writing tests that use Squire.js a little easier.
+It overwrites test and manages all the handling of stop/start for you.
+Examples of how to set up qunit to run with AMD and squire.js can be found inside /tests/tests-qunit.html
+Note - Your injector will have to be defined as global to your test module
+
+Example usage 
+
+```javascript
+define(['Squire-QUnit'], function(Squire) {
+  var injector = new Squire();
+
+  test("Squire test", injector.run(['mocks/Shirt'], function(Shirt) {
+    equal( Shirt.color, 'Red', "This should be red");
+  }));
+});
+
+```

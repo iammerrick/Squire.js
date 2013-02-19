@@ -40,6 +40,9 @@ module.exports = function(grunt) {
         chai: true
       }
     },
+    qunit: {
+      files: ['test/tests-qunit.html']
+    },
     mocha: {
       files: ['test/tests.html']
     },
