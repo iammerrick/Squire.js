@@ -176,6 +176,7 @@ define(function() {
       each(self.requiredCallbacks, function(cb) {
         cb.call(null, dependencies, args);
       });
+      self.clean(dependencies);
     });
   };
 
