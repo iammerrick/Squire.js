@@ -123,8 +123,9 @@ define(function() {
       each(path, function(alias, key) {
         this.mock(key, alias);
       }, this);
+    } else {
+      this.mocks[path] = mock;
     }
-    this.mocks[path] = mock;
 
     return this;
   };
