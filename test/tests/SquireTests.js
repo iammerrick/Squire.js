@@ -200,7 +200,8 @@ define(['Squire'], function(Squire) {
               size: 'Small'
             }
           })
-          .require(['mocks/Outfit'], function(Outfit) {
+          .require(['mocks/Outfit', 'mocks'], function(Outfit, mocks) {
+            mocks.mocks.should.have.keys(['mocks/Shirt']);
             Outfit.shirt.color.should.equal('Silver');
             done();
           });
