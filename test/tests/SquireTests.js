@@ -35,7 +35,7 @@ define(['Squire'], function(Squire) {
       it('should require a relative module', function(done) {
         var squire = new Squire();
         squire
-          .mock(['mocks/Shirt'], {
+          .mock('mocks/Shirt', {
             color: 'Blue',
             size: 'Unknown'
           })
@@ -50,7 +50,7 @@ define(['Squire'], function(Squire) {
       it('should mock one of multiple dependencies', function(done) {
         var squire = new Squire();
         squire
-          .mock(['mocks/Pant'], {
+          .mock('mocks/Pant', {
             type: 'None'
           })
           .require(['mocks/FullyDressed'], function(FullyDressed) {
