@@ -208,6 +208,36 @@ define(['Squire'], function(Squire) {
       });
     });
 
+
+   describe('CJS with reference', function() {
+      var squire = new Squire();
+       squire
+        .mock({
+          'mocks/Shirt' : {
+            color: 'Silver',
+            size: 'Small'
+          }
+        });
+      afterEach(function(done) {
+        squire.clean();
+        squire
+        .mock({
+          'mocks/Shirt' : {
+            color: 'Orange',
+            size: 'Small'
+          }
+        });
+        done();
+      });
+      it('Should use supplied mock', squire.run(['mocks/RefOutfit'], function(CJS) {
+        CJS.shirt.color.should.equal('Silver');
+      }));
+      it('should be using a different mock', squire.run(['mocks/RefOutfit'], function(CJS) {
+        CJS.shirt.color.should.equal('Orange');
+      }));
+
+    });
+
     describe('shared squire', function() {
       var squire = new Squire();
       squire.mock('mocks/Shirt', {
