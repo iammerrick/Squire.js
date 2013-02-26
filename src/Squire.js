@@ -141,7 +141,7 @@ define(function() {
     return this;
   };
 
-  Squire.prototype.require = function(dependencies, callback) {
+  Squire.prototype.require = function(dependencies, callback, errback) {
     var magicModuleName = 'mocks';
     var self = this;
     var path, magicModuleLocation;
@@ -177,7 +177,7 @@ define(function() {
       each(self.requiredCallbacks, function(cb) {
         cb.call(null, dependencies, args);
       });
-    });
+    }, errback);
   };
 
   Squire.prototype.clean = function(mock) {
