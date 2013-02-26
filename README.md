@@ -24,12 +24,15 @@ define(['Squire'], function(Squire) {
 var injector = new Squire('other-requirejs-context');
 ```
 
-### require(Array dependencies, Function callback)
+### require(Array dependencies, Function callback, Function errback)
 
 ```javascript
 var injector = new Squire();
 injector.require(['utilities/Calculator'], function(Calculator) {
   // Calculator has been loaded.
+},
+function(err) {
+  // Calculator threw an error loading.
 });
 ```
 
