@@ -110,6 +110,19 @@ define(['Squire'], function(Squire) {
       
         squire.require(['mocks/Shirt'], function (shirt) {});
       });
+
+      it('should call an errback when a dependency throws an error', function(done) {
+        var squire = new Squire();
+        squire
+          .mock('mocks/Shirt', function() {
+            throw new Error('fashion disaster');
+          })
+          .require(['mocks/Shirt'], chai.assert.fail, function(err) {
+            err.requireModules.should.deep.equal(['mocks/Shirt']);
+            err.message.should.equal('fashion disaster');
+            done();
+          });
+      });
     });
     
     describe('store', function(){
