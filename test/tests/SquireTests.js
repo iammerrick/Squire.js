@@ -300,5 +300,15 @@ define(['Squire'], function(Squire) {
       });
     });
 
+    describe('Helpers', function() {
+      describe('returns', function() {
+        it('should create a function that returns what is passed', function() {
+          var instance = { type: 'Soda', flavor: 'Diet Coke' };
+          var definition = Squire.Helpers.returns(instance);
+
+          definition().should.equal(instance);
+        });
+      });
+    });
   });
 });

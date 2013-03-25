@@ -225,5 +225,17 @@ define(function() {
     return run;
   };
 
+  /**
+   * Utilities
+   */
+
+  Squire.Helpers = {};
+
+  Squire.Helpers.returns = function(what) {
+    return function() {
+      return what;
+    };
+  };
+
   return Squire;
 });
