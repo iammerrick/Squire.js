@@ -113,3 +113,15 @@ it('should execute this test using run', injector.run(['mocks/Shirt'], function(
   Shirt.color.should.equal('Red');
 }));
 ```
+
+## Utilities
+
+Squire.js offers a few helper functions to ease pains associated with mocking and testing AMD modules.
+
+### Squire.Helpers.returns(Any what)
+
+Often times AMD modules return constructor functions which means that mocking such a class would end up having to create a function that returns a function that returns your mocked instance. Squire.js eases that pain by wrapping up your instance for you.
+
+```javascript
+injector.mock('Views/AwesomeView', Squire.Helpers.returns(mockViewInstance));
+```
