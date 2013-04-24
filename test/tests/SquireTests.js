@@ -309,6 +309,17 @@ define(['Squire'], function(Squire) {
           definition().should.equal(instance);
         });
       });
+
+      describe('constructs', function() {
+        it('should create a function that returns a constructor to return what is passed', function() {
+          var instance = { type: 'Soda', flavor: 'Diet Coke'};
+          var definition = Squire.Helpers.constructs(instance);
+          var Definition = definition(); // simulates requirejs AMD module
+
+          var soda = new Definition();
+          soda.should.equal(instance);
+        }); 
+      })
     });
   });
 });
