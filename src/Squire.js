@@ -237,5 +237,13 @@ define(function() {
     };
   };
 
+  Squire.Helpers.constructs = function(what) {
+    return function() {
+      return function() {
+        return what; 
+      };
+    };
+  };
+
   return Squire;
 });
