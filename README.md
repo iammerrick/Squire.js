@@ -120,8 +120,23 @@ Squire.js offers a few helper functions to ease pains associated with mocking an
 
 ### Squire.Helpers.returns(Any what)
 
-Often times AMD modules return constructor functions which means that mocking such a class would end up having to create a function that returns a function that returns your mocked instance. Squire.js eases that pain by wrapping up your instance for you.
+Create a mock that returns mockViewInstance
 
 ```javascript
 injector.mock('Views/AwesomeView', Squire.Helpers.returns(mockViewInstance));
+```
+
+### Squire.Helpers.constructs(Any what)
+
+Often times AMD modules return constructor functions which means that mocking such a class would end up having to create a function that returns a function that returns your mocked instance. Squire.js eases that pain by wrapping up your instance for you.
+
+```javascript
+injector.mock('Views/AwesomeView', Squire.Helpers.constructs(mockViewInstance));
+```
+
+Now any module that uses `Views/AwesomeView` as a constructor dependency will use get your mock instead:
+
+```javascript
+// when invoked with in an Squire.injector.require call
+var awesome = new AwesomeView(); // awesome now gets your mockViewInstance
 ```
