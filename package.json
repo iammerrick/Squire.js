@@ -1,5 +1,5 @@
 {
-  "name": "Squire.js",
+  "name": "squirejs",
   "devDependencies": {
     "grunt-mocha": "~0.1.3",
     "grunt": "~0.3.17"
