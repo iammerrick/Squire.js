@@ -318,8 +318,8 @@ define(['Squire'], function(Squire) {
 
           var soda = new Definition();
           soda.should.equal(instance);
-        }); 
-      })
+        });
+      });
     });
   });
 });
