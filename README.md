@@ -6,8 +6,15 @@ Squire.js is a dependency injector for Require.js users to make mocking dependen
 
 ## Installation
 
+
+### Bower
 ```
 bower install squire
+```
+
+### NPM
+```
+npm install squirejs
 ```
 
 ## API
