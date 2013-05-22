@@ -117,9 +117,9 @@ it('should execute this test using run', injector.run(['mocks/Shirt'], function(
 
 
 
-### Squire-Qunit 
+### Squire-QUnit
 
-Squire-Qunit is a small addon to qunit to make writing tests that use Squire.js a little easier.
+Squire-QUnit is a small addon to qunit to make writing tests that use Squire.js a little easier.
 It overwrites test and manages all the handling of stop/start for you.
 Examples of how to set up qunit to run with AMD and squire.js can be found inside /tests/tests-qunit.html
 Note - Your injector will have to be defined as global to your test module
