@@ -200,10 +200,11 @@ define(function() {
   };
 
   Squire.prototype.remove = function() {
-    var path;
+    var path, context = getContext(this.id);
+    if(!context) { return; }
     
     each(getContext(this.id).defined, function(dependency, path) {
-      undef(getContext(this.id), path);
+      undef(context, path);
     }, this);
     
     delete requirejs.s.contexts[this.id];
