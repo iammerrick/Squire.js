@@ -10,6 +10,10 @@ define(function() {
     return toString.call(arr) === '[object Array]';
   };
   
+  var isFunction = function(func) {
+    return func && toString.call(func) === '[object Function]';
+  };
+  
   var indexOf = function(arr, search) {
     for (var i = 0, length = arr.length; i < length; i++) {
       if (arr[i] === search) {
@@ -153,7 +157,15 @@ define(function() {
     }
     
     each(this.mocks, function(mock, path) {
-      define(path, mock);
+	  var moduleMock = mock;
+	  /*If mock is a kind of init function,
+	  wrap it into the module definition function*/
+	  if(isFunction(mock)) {
+	    moduleMock = function() {
+		  return mock;
+		};
+	  }
+	  define(path, moduleMock);
     });
 
     this.load(dependencies, function() {
