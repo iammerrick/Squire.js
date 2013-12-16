@@ -114,12 +114,9 @@ define(['Squire'], function(Squire) {
       it('should call an errback when a dependency throws an error', function(done) {
         var squire = new Squire();
         squire
-          .mock('mocks/Shirt', function() {
-            throw new Error('fashion disaster');
-          })
-          .require(['mocks/Shirt'], chai.assert.fail, function(err) {
-            err.requireModules.should.deep.equal(['mocks/Shirt']);
-            err.message.should.equal('fashion disaster');
+          .require(['mocks/Shoes'], chai.assert.fail, function(err) {
+            err.requireModules.should.deep.equal(['mocks/Shoes']);
+            err.message.should.equal('Fashion Disaster!');
             done();
           });
       });
@@ -165,9 +162,7 @@ define(['Squire'], function(Squire) {
         var squire = new Squire();
         squire
           .mock('mocks/Shirt', function() {
-            return function() {
-              return 'Winter Blue';
-            };
+            return 'Winter Blue';
           })
           .require(['mocks/Outfit'], function(Outfit) {
             Outfit.shirt().should.equal('Winter Blue');

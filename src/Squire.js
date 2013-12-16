@@ -9,6 +9,10 @@ define(function() {
   var isArray = function(arr) {
     return toString.call(arr) === '[object Array]';
   };
+
+  var isFunction = function(fn) {
+    return toString.call(fn) === '[object Function]';
+  };
   
   var indexOf = function(arr, search) {
     for (var i = 0, length = arr.length; i < length; i++) {
@@ -124,7 +128,11 @@ define(function() {
         this.mock(key, alias);
       }, this);
     } else {
-      this.mocks[path] = mock;
+      if (isFunction(mock)) {
+        this.mocks[path] = Squire.Helpers.returns(mock);
+      } else {
+        this.mocks[path] = mock;
+      }
     }
 
     return this;
