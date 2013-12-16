@@ -6,7 +6,7 @@
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.7.2"
   },
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Merrick Christensen <merrick.christensen@gmail.com> (http://www.merrickchristensen.com/)",
   "contributors": [
     "Jamison Dance <jergason@gmail.com> (http://jamisondance.com)"
