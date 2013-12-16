@@ -1,14 +1,6 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    lint: {
-      all: [
-        'grunt.js',
-        'src/Squire.js',
-        'test/config.js',
-        'test/tests/**/*.js'
-      ]
-    },
     jshint: {
       options: {
         bitwise: false,
@@ -28,32 +20,34 @@ module.exports = function(grunt) {
         trailing: true,
         browser: true,
         node: true,
-        es5: true
+        globals: {
+          define: true,
+          requirejs: true,
+          require: true,
+          describe: true,
+          it: true,
+          mocha: true,
+          chai: true
+        }
       },
-      globals: {
-        define: true,
-        requirejs: true,
-        require: true,
-        describe: true,
-        it: true,
-        mocha: true,
-        chai: true
-      }
+      files: [
+        'grunt.js',
+        'src/Squire.js',
+        'test/config.js',
+        'test/tests/**/*.js'
+      ]
     },
     mocha: {
-      files: ['test/tests.html']
-    },
-    watch: {
-      files: ['<config:lint.all>'],
-      tasks: ['lint']
+      files: ['test/tests.html', 'test/tests-with-main.html']
     }
   });
   
   grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
   
   /**
    * Register the default task!
    */
-  grunt.registerTask('default', 'watch');
+  grunt.registerTask('default', ['jshint', 'mocha']);
 
 };
