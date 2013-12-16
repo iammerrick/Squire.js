@@ -2,8 +2,9 @@
   "name": "squirejs",
   "main": "./src/Squire",
   "devDependencies": {
-    "grunt-mocha": "~0.1.3",
-    "grunt": "~0.3.17"
+    "grunt-mocha": "~0.4.7",
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.7.2"
   },
   "version": "0.1.0",
   "author": "Merrick Christensen <merrick.christensen@gmail.com> (http://www.merrickchristensen.com/)",
