@@ -1,32 +1,32 @@
 define(function() {
-  
+
   /**
    * Utility Functions
    */
-   
+
   var toString = Object.prototype.toString;
-  
+
   var isArray = function(arr) {
     return toString.call(arr) === '[object Array]';
   };
-  
+
   var indexOf = function(arr, search) {
     for (var i = 0, length = arr.length; i < length; i++) {
       if (arr[i] === search) {
         return i;
       }
     }
-    
+
     return -1;
   };
-  
+
   var each = function(obj, iterator, context) {
     var breaker = {};
-    
+
     if (obj === null) {
       return;
     }
-    
+
     if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
       obj.forEach(iterator, context);
     } else if (obj.length === +obj.length) {
@@ -45,23 +45,23 @@ define(function() {
       }
     }
   };
-  
+
   /**
    * Require.js Abstractions
    */
-  
+
   var getContext = function(id) {
     return requirejs.s.contexts[id];
   };
-  
+
   var undef = function(context, module) {
     if (context.undef) {
       return context.undef(module);
     }
-    
+
     return context.require.undef(module);
   };
-  
+
   /**
    * Create a context name incrementor.
    */
@@ -151,7 +151,7 @@ define(function() {
     if (magicModuleLocation !== -1) {
       dependencies.splice(magicModuleLocation, 1);
     }
-    
+
     each(this.mocks, function(mock, path) {
       define(path, mock);
     });
@@ -173,7 +173,7 @@ define(function() {
       }
 
       callback.apply(null, args);
-      
+
       each(self.requiredCallbacks, function(cb) {
         cb.call(null, dependencies, args);
       });
@@ -200,15 +200,16 @@ define(function() {
   };
 
   Squire.prototype.remove = function() {
-    var path;
-    
+    var path, context = getContext(this.id);
+    if(!context) { return; }
+
     each(getContext(this.id).defined, function(dependency, path) {
-      undef(getContext(this.id), path);
+      undef(context, path);
     }, this);
-    
+
     delete requirejs.s.contexts[this.id];
   };
-  
+
   Squire.prototype.run = function(deps, callback) {
     var self = this;
     var run = function(done) {
@@ -217,11 +218,11 @@ define(function() {
         done();
       });
     };
-    
+
     run.toString = function() {
       return callback.toString();
     };
-    
+
     return run;
   };
 
