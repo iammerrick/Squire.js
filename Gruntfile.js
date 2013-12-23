@@ -38,7 +38,10 @@ module.exports = function(grunt) {
       ]
     },
     mocha: {
-      files: ['test/tests.html', 'test/tests-with-main.html']
+      files: ['test/tests.html', 'test/tests-with-main.html'],
+      options: {
+        log: true
+      }
     },
     watch: {
       test: {
