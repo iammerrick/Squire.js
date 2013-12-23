@@ -31,7 +31,7 @@ module.exports = function(grunt) {
         }
       },
       files: [
-        'grunt.js',
+        'Gruntfile.js',
         'src/Squire.js',
         'test/config.js',
         'test/tests/**/*.js'
