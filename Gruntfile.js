@@ -39,11 +39,18 @@ module.exports = function(grunt) {
     },
     mocha: {
       files: ['test/tests.html', 'test/tests-with-main.html']
+    },
+    watch: {
+      test: {
+        files: ['test/**/*', 'src/**/*'],
+        tasks: ['jshint', 'mocha']
+      }
     }
   });
   
   grunt.loadNpmTasks('grunt-mocha');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
   
   /**
    * Register the default task!
