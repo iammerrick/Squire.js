@@ -77,6 +77,7 @@ define(function() {
 
   var Squire = function() {
     this.mocks = {};
+    this.modifiers = {};
     this._store = [];
     this.requiredCallbacks = [];
     this.configure.apply(this, arguments);
@@ -138,6 +139,57 @@ define(function() {
     return this;
   };
 
+  /**
+   * Modify a dependency.
+   * 
+   * @param path The module name to modify.
+   * @param func An modifier function.
+   */
+  Squire.prototype.modify = function(path, func) {
+    var alias, modifier;
+    if (typeof path === 'object') {
+      each(path, function(alias, key) {
+        this.modify(key, alias);
+      }, this);
+    } else {
+      modifier = this.modifiers[path] = {};
+      if (func) {
+        modifier.func = func;
+      }
+    }
+
+    return this;
+  };
+
+  /**
+   * Extend a dependency.
+   * 
+   * @param path The module name to extend.
+   * @param extension An object to extend from.
+   * @param func An optional additonal modifier function.
+   */
+  Squire.prototype.extend = function(path, extension, func) {
+    var alias;
+    if (typeof path === 'object') {
+      each(path, function(alias, key) {
+        this.extend(key, alias);
+      }, this);
+    } else {
+      var extendFunc = function (dep) {
+        // TODO: Optional deep extend?
+        each(extension, function (value, key) {
+          dep[key] = value;
+        });
+        if (func) {
+          func.call(null, dep);
+        }
+      };
+
+      this.modify(path, extendFunc);
+    }
+    return this;
+  };
+
   Squire.prototype.store = function(path) {
     if (path && typeof path === 'string') {
       this._store.push(path);
@@ -164,27 +216,61 @@ define(function() {
       define(path, mock);
     });
 
-    this.load(dependencies, function() {
-      var store = {};
+    var onModified = function () {
+      self.load(dependencies, function() {
+        var store = {};
+        var args = Array.prototype.slice.call(arguments);
+        var dependency;
+
+        if (magicModuleLocation !== -1) {
+          each(self._store, function(dependency) {
+            store[dependency] = getContext(self.id).defined[dependency];
+          });
+
+          args.splice(magicModuleLocation, 0, {
+            mocks: self.mocks,
+            store: store
+          });
+        }
+
+        callback.apply(null, args);
+
+        each(self.requiredCallbacks, function(cb) {
+          cb.call(null, dependencies, args);
+        });
+      }, errback);
+    };
+
+    // linearize modifiers object to guarantee order
+    var paths = [];
+    var modifiers = [];
+
+    each(this.modifiers, function(modifier, path) {
+      paths.push(path);
+      modifiers.push(modifier);
+    });
+
+    this.load(paths, function () {
       var args = Array.prototype.slice.call(arguments);
-      var dependency;
 
-      if (magicModuleLocation !== -1) {
-        each(self._store, function(dependency) {
-          store[dependency] = getContext(self.id).defined[dependency];
+      each(args, function (dep, index) {
+        var path = paths[index];
+        var modifier = modifiers[index];
+        var object = {};
+        each(dep, function (value, key) {
+          if (! object.hasOwnProperty(key)) {
+            object[key] = value;
+          }
         });
-
-        args.splice(magicModuleLocation, 0, {
-          mocks: self.mocks,
-          store: store
-        });
-      }
-
-      callback.apply(null, args);
-      
-      each(self.requiredCallbacks, function(cb) {
-        cb.call(null, dependencies, args);
+        if (isFunction(modifier.func)) {
+          modifier.func.call(null, object);
+        }
+        undef(getContext(self.id), path);
+        define(path, object);
       });
+
+      onModified();
+
     }, errback);
   };
 
@@ -194,6 +280,7 @@ define(function() {
     if (mock && typeof mock === 'string') {
       undef(getContext(this.id), mock);
       delete this.mocks[mock];
+      delete this.modifiers[mock];
     } else if(mock && isArray(mock)) {
       each(mock, function(mockToClean) {
         this.clean(mockToClean);

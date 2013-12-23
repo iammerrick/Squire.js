@@ -216,6 +216,131 @@ define(['Squire'], function(Squire) {
       });
     });
 
+    describe('modify', function() {
+      it('should modify my dependency', function(done) {
+        var squire = new Squire();
+        squire
+          .modify('mocks/Shirt', function (dep) {
+            dep.color = 'Blue';
+          })
+          .require(['mocks/Outfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Blue');
+            Outfit.shirt.size.should.equal('Large');
+            done();
+          });
+      });
+
+      it('should modify my cjs dependency', function(done) {
+        var squire = new Squire();
+        squire
+          .modify('mocks/Shirt', function (dep) {
+            dep.color = 'Purple';
+          })
+          .require(['mocks/CJSOutfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Purple');
+            done();
+          });
+      });
+
+      it('should not modify the dependency for other requires', function(done) {
+        var squire = new Squire();
+        squire
+          .modify('mocks/Shirt', function (dep) {
+            dep.color = 'Silver';
+          })
+          .require(['mocks/CJSOutfit'], function(Outfit) {
+            require(['mocks/CJSOutfit'], function(NotTheMock) {
+              NotTheMock.shirt.color.should.equal('Red');
+              done();
+            });
+          });
+      });
+
+      it('should accept and object literal as an argument', function(done) {
+        var squire = new Squire();
+        squire
+          .modify({
+            'mocks/Shirt': function (dep) {
+              dep.color = 'Silver';
+            }
+          })
+          .require(['mocks/Outfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Silver');
+            done();
+          });
+      });
+    });
+
+    describe('extend', function() {
+      it('should extend my dependency', function(done) {
+        var squire = new Squire();
+        squire
+          .extend('mocks/Shirt', {
+            color: 'Blue'
+          })
+          .require(['mocks/Outfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Blue');
+            Outfit.shirt.size.should.equal('Large');
+            done();
+          });
+      });
+
+      it('should extend my cjs dependency', function(done) {
+        var squire = new Squire();
+        squire
+          .extend('mocks/Shirt', {
+            color: 'Purple'
+          })
+          .require(['mocks/CJSOutfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Purple');
+            done();
+          });
+      });
+
+      it('should extend and modify my dependency', function(done) {
+        var squire = new Squire();
+        squire
+          .extend('mocks/Shirt', {
+            color: 'Blue'
+          }, function (dep) {
+            dep.color = 'Orange';
+          })
+          .require(['mocks/Outfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Orange');
+            Outfit.shirt.size.should.equal('Large');
+            done();
+          });
+      });
+
+      it('should not extend the dependency for other requires', function(done) {
+        var squire = new Squire();
+        squire
+          .extend('mocks/Shirt', {
+            color: 'Silver'
+          })
+          .require(['mocks/CJSOutfit'], function(Outfit) {
+            require(['mocks/CJSOutfit'], function(NotTheMock) {
+              NotTheMock.shirt.color.should.equal('Red');
+              done();
+            });
+          });
+      });
+
+      it('should accept and object literal as an argument', function(done) {
+        var squire = new Squire();
+        squire
+          .extend({
+            'mocks/Shirt': {
+              color: 'Silver'
+            }
+          })
+          .require(['mocks/Outfit'], function(Outfit) {
+            Outfit.shirt.color.should.equal('Silver');
+            done();
+          });
+      });
+    });
+
     describe('shared squire', function() {
       var squire = new Squire();
       squire.mock('mocks/Shirt', {
