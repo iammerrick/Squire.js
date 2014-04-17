@@ -70,7 +70,7 @@ define(function() {
    * Create a context name incrementor.
    */
   var idCounter = 0;
-  var uniqueId = function(prefix) {
+  var uniqueId = function() {
     var id = idCounter++;
     return 'context' + id;
   };
@@ -95,7 +95,6 @@ define(function() {
    */
   Squire.prototype.configure = function(context) {
     var configuration = {};
-    var property;
 
     this.id = uniqueId();
 
@@ -122,7 +121,6 @@ define(function() {
   };
 
   Squire.prototype.mock = function(path, mock) {
-    var alias;
     if (typeof path === 'object') {
       each(path, function(alias, key) {
         this.mock(key, alias);
@@ -152,7 +150,7 @@ define(function() {
   Squire.prototype.require = function(dependencies, callback, errback) {
     var magicModuleName = 'mocks';
     var self = this;
-    var path, magicModuleLocation;
+    var magicModuleLocation;
 
     magicModuleLocation = indexOf(dependencies, magicModuleName);
 
@@ -167,7 +165,6 @@ define(function() {
     this.load(dependencies, function() {
       var store = {};
       var args = Array.prototype.slice.call(arguments);
-      var dependency;
 
       if (magicModuleLocation !== -1) {
         each(self._store, function(dependency) {
@@ -189,8 +186,6 @@ define(function() {
   };
 
   Squire.prototype.clean = function(mock) {
-    var path;
-
     if (mock && typeof mock === 'string') {
       undef(getContext(this.id), mock);
       delete this.mocks[mock];
@@ -208,8 +203,6 @@ define(function() {
   };
 
   Squire.prototype.remove = function() {
-    var path;
-    
     each(getContext(this.id).defined, function(dependency, path) {
       undef(getContext(this.id), path);
     }, this);
