@@ -171,6 +171,17 @@ define(['Squire'], function(Squire) {
 
       });
 
+      it('should allow an array as a dependency', function (done) {
+          var squire = new Squire();
+          squire
+            .mock('mocks/Shirt', ['Ocean Blue'])
+            .require(['mocks/Outfit'], function (Outfit){
+                Outfit.shirt.should.deep.equal(['Ocean Blue']);
+                done();
+            });
+
+      });
+
       it('should mock my cjs dependency', function(done) {
         var squire = new Squire();
         squire
