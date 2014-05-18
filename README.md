@@ -2,7 +2,7 @@
 
 Squire.js is a dependency injector for Require.js users to make mocking dependencies easy!
 
-![Squire.js - The Squire](http://f.cl.ly/items/2e3f3x3b0K132R3c2t06/squire.png)
+![Squire.js - The Squire](http://f.cl.ly/items/0r1a131K3H0X1k0d0e18/Squire.png)
 
 ## Installation
 
@@ -153,3 +153,7 @@ Now any module that uses `Views/AwesomeView` as a constructor dependency will us
 // when invoked with in an Squire.injector.require call
 var awesome = new AwesomeView(); // awesome now gets your mockViewInstance
 ```
+
+## Credits
+
+Illustration by Adam Christiansen
