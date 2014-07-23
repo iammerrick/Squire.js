@@ -7,6 +7,10 @@
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-contrib-watch": "~0.5.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/iammerrick/Squire.js"
+  },
   "version": "0.2.0",
   "author": "Merrick Christensen <merrick.christensen@gmail.com> (http://www.merrickchristensen.com/)",
   "contributors": [
