@@ -7,9 +7,14 @@
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-contrib-watch": "~0.5.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/iammerrick/Squire.js.git"
+  },
   "version": "0.2.0",
   "author": "Merrick Christensen <merrick.christensen@gmail.com> (http://www.merrickchristensen.com/)",
   "contributors": [
-    "Jamison Dance <jergason@gmail.com> (http://jamisondance.com)"
+    "Jamison Dance <jergason@gmail.com> (http://jamisondance.com)",
+    "Stepan Anchugov <kixxx1@gmail.com> (http://kixlive.ru)"
   ]
 }
