@@ -70,9 +70,11 @@ define(function() {
    * Create a context name incrementor.
    */
   var idCounter = 0;
+
   var uniqueId = function(prefix) {
+    prefix || (prefix = 'context');
     var id = idCounter++;
-    return 'context' + id;
+    return prefix + id;
   };
 
   var Squire = function() {
