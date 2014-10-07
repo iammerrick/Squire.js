@@ -14,7 +14,12 @@
       chai.should();
       require(['config'], function() {
         require(['tests/SquireTests'], function() {
-          mocha.run();
+          if (window.mochaPhantomJS) {
+              mochaPhantomJS.run();
+          }
+          else {
+              mocha.run();
+          }
         });
       });
     </script>
