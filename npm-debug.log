@@ -1,0 +1,112 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/bin/node', '/usr/local/bin/npm', 'publish' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.33
+4 verbose publish [ '.' ]
+5 verbose cache add [ '.', null ]
+6 verbose cache add name=undefined spec="." args=[".",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: '.',
+7 verbose parsed url   path: '.',
+7 verbose parsed url   href: '.' }
+8 silly lockFile 3a52ce78- .
+9 verbose lock . /Users/Merrick/.npm/3a52ce78-.lock
+10 verbose tar pack [ '/Users/Merrick/.npm/squirejs/0.2.0/package.tgz', '.' ]
+11 verbose tarball /Users/Merrick/.npm/squirejs/0.2.0/package.tgz
+12 verbose folder .
+13 info prepublish squirejs@0.2.0
+14 silly lockFile 1f1177db-tar tar://.
+15 verbose lock tar://. /Users/Merrick/.npm/1f1177db-tar.lock
+16 silly lockFile 1ea1c899-k-npm-squirejs-0-2-0-package-tgz tar:///Users/Merrick/.npm/squirejs/0.2.0/package.tgz
+17 verbose lock tar:///Users/Merrick/.npm/squirejs/0.2.0/package.tgz /Users/Merrick/.npm/1ea1c899-k-npm-squirejs-0-2-0-package-tgz.lock
+18 silly lockFile 1f1177db-tar tar://.
+19 silly lockFile 1f1177db-tar tar://.
+20 silly lockFile 1ea1c899-k-npm-squirejs-0-2-0-package-tgz tar:///Users/Merrick/.npm/squirejs/0.2.0/package.tgz
+21 silly lockFile 1ea1c899-k-npm-squirejs-0-2-0-package-tgz tar:///Users/Merrick/.npm/squirejs/0.2.0/package.tgz
+22 silly lockFile ad4f4d1e-rrick-npm-squirejs-0-2-0-package /Users/Merrick/.npm/squirejs/0.2.0/package
+23 verbose lock /Users/Merrick/.npm/squirejs/0.2.0/package /Users/Merrick/.npm/ad4f4d1e-rrick-npm-squirejs-0-2-0-package.lock
+24 silly lockFile ad4f4d1e-rrick-npm-squirejs-0-2-0-package /Users/Merrick/.npm/squirejs/0.2.0/package
+25 silly lockFile ad4f4d1e-rrick-npm-squirejs-0-2-0-package /Users/Merrick/.npm/squirejs/0.2.0/package
+26 silly lockFile 3a52ce78- .
+27 silly lockFile 3a52ce78- .
+28 silly publish { name: 'squirejs',
+28 silly publish   main: './src/Squire',
+28 silly publish   devDependencies:
+28 silly publish    { 'grunt-mocha': '~0.4.7',
+28 silly publish      grunt: '~0.4.2',
+28 silly publish      'grunt-contrib-jshint': '~0.7.2',
+28 silly publish      'grunt-contrib-watch': '~0.5.3' },
+28 silly publish   repository: { type: 'git', url: 'git://github.com/iammerrick/Squire.js' },
+28 silly publish   version: '0.2.0',
+28 silly publish   author:
+28 silly publish    { name: 'Merrick Christensen',
+28 silly publish      email: 'merrick.christensen@gmail.com',
+28 silly publish      url: 'http://www.merrickchristensen.com/' },
+28 silly publish   contributors:
+28 silly publish    [ { name: 'Jamison Dance',
+28 silly publish        email: 'jergason@gmail.com',
+28 silly publish        url: 'http://jamisondance.com' } ],
+28 silly publish   readme: '# Squire.js\n\nSquire.js is a dependency injector for Require.js users to make mocking dependencies easy!\n\n![Squire.js - The Squire](http://f.cl.ly/items/0r1a131K3H0X1k0d0e18/Squire.png)\n\n## Installation\n\n\n### Bower\n```\nbower install squire\n```\n\n### NPM\n```\nnpm install squirejs\n```\n\n## API\n\n### constructor\n\nFirst you have to load Squire in, just like any other Require.js module. Beyond this example the rest of the documentation will assume you already loaded Squire   as a module dependency.\n\n#### Default Configuration\n\n```javascript\ndefine([\'Squire\'], function(Squire) {\n  var injector = new Squire();\n});\n```\n\n#### Different Context\n\n```javascript\nvar injector = new Squire(\'other-requirejs-context\');\n```\n\n### require(Array dependencies, Function callback, Function errback)\n\n```javascript\nvar injector = new Squire();\ninjector.require([\'utilities/Calculator\'], function(Calculator) {\n  // Calculator has been loaded.\n},\nfunction(err) {\n  // Calculator threw an error loading.\n});\n```\n\n### mock(String name | Object(name: mock), Object mock)\n\nThe mock method lets you pass in mocks to be used for a given modules dependency. The first argument is the module name, the second argument is the mock itself. For multiple mocks you can pass an object, the objects key will be the path and the corresponding value will be used as the mock.\n\n```javascript\nvar injector = new Squire();\n\n// Key value mocking.\ninjector.mock(dependencyName, mockForDependency);\n\n// You can pass an object literal as well.\ninjector.mock(dependencyNameAndMock);\n```\n\n```javascript\nvar injector = new Squire();\ninjector.mock(\'CrazyCalculatorDependency\', {\n    sin: 10\n  })\n  .require([\'utilities/Calculator\'], function(Calculator) {\n    // The Calculators dependency \'CrazyCalculatorDependency\' has been mocked to\n    // use the object literal { sin: 10 } that we passed in.\n  });\n```\n\n### store(String name | Array names)\n\nThe store method allows you to get a pointer back to a dependency so you can stub it.\n\n```javascript\nvar injector = new Squire();\ninjector\n  .store(\'CrazyCalculatorDependency\')\n  .require([\'utilities/Calculator\', \'mocks\'], function(Calculator, mocks) {\n    // mocks.store.CrazyCalculatorDependency is the Calculators dependency, you can\n    // manipulate it or stub it with Sinon now.\n  });\n```\n\n### clean(Optional (String name | Array names))\n\nThe clean method allows you to remove mocks by name from your Squire instance, or remove all mocks.\n\n```javascript\nvar injector = new Squire();\ninjector.mock(\'something\', { other: \'mock\'});\n\n// You do stuff but want to be able to get the real \'something\' now.\ninjector.clean(\'something\');\n\n// Or a collection of mocks\ninjector.clean([\'something\', \'something/else\']);\n```\n\nOr clean out all the mocks stored in a Squire instance.\n\n```javascript\ninjector.clean();\n```\n\n### remove()\n\nRemove all the dependencies loaded by this instance of Squire.\n\n```javascript\ninjector.remove();\n```\n\n### run()\n\nRun generates a function that will receive a done callback and execute it after your test function is complete. Particularly useful for frameworks where asynchrony is handled with a callback. Here is an example with Mocha.js. Jasmine can offer this callback approach using [Jasmin.Async](http://lostechies.com/derickbailey/2012/08/18/jasmine-async-making-asynchronous-testing-with-jasmine-suck-less/).\n\n```javascript\nit(\'should execute this test using run\', injector.run([\'mocks/Shirt\'], function(Shirt) {\n  Shirt.color.should.equal(\'Red\');\n}));\n```\n\n## Utilities\n\nSquire.js offers a few helper functions to ease pains associated with mocking and testing AMD modules.\n\n### Squire.Helpers.returns(Any what)\n\nCreate a mock that returns mockViewInstance\n\n```javascript\ninjector.mock(\'Views/AwesomeView\', Squire.Helpers.returns(mockViewInstance));\n```\n\n### Squire.Helpers.constructs(Any what)\n\nOften times AMD modules return constructor functions which means that mocking such a class would end up having to create a function that returns a function that returns your mocked instance. Squire.js eases that pain by wrapping up your instance for you.\n\n```javascript\ninjector.mock(\'Views/AwesomeView\', Squire.Helpers.constructs(mockViewInstance));\n```\n\nNow any module that uses `Views/AwesomeView` as a constructor dependency will use get your mock instead:\n\n```javascript\n// when invoked with in an Squire.injector.require call\nvar awesome = new AwesomeView(); // awesome now gets your mockViewInstance\n```\n\n## Credits\n\nIllustration by Adam Christiansen\n',
+28 silly publish   readmeFilename: 'README.md',
+28 silly publish   gitHead: 'b96f5fa8c83c702df84a94c3d3ef4c930dc6eca9',
+28 silly publish   description: 'Squire.js is a dependency injector for Require.js users to make mocking dependencies easy!',
+28 silly publish   bugs: { url: 'https://github.com/iammerrick/Squire.js/issues' },
+28 silly publish   homepage: 'https://github.com/iammerrick/Squire.js',
+28 silly publish   _id: 'squirejs@0.2.0',
+28 silly publish   scripts: {},
+28 silly publish   _shasum: '9779065d0f8d4e07cb7cb47d35b22bb4abfd4370',
+28 silly publish   _from: '.' }
+29 verbose request where is /squirejs
+30 verbose request registry https://registry.npmjs.org/
+31 verbose request id b972b0c2ee6c16c3
+32 verbose url raw /squirejs
+33 verbose url resolving [ 'https://registry.npmjs.org/', './squirejs' ]
+34 verbose url resolved https://registry.npmjs.org/squirejs
+35 verbose request where is https://registry.npmjs.org/squirejs
+36 info trying registry request attempt 1 at 10:12:17
+37 http PUT https://registry.npmjs.org/squirejs
+38 http 403 https://registry.npmjs.org/squirejs
+39 verbose headers { date: 'Wed, 26 Nov 2014 17:12:15 GMT',
+39 verbose headers   server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+39 verbose headers   'content-type': 'application/json',
+39 verbose headers   'cache-control': 'max-age=60',
+39 verbose headers   'content-length': '7830',
+39 verbose headers   'accept-ranges': 'bytes',
+39 verbose headers   via: '1.1 varnish',
+39 verbose headers   'x-served-by': 'cache-ty68-TYO',
+39 verbose headers   'x-cache': 'MISS',
+39 verbose headers   'x-cache-hits': '0',
+39 verbose headers   'x-timer': 'S1417021934.715530,VS0,VE506',
+39 verbose headers   'keep-alive': 'timeout=10, max=50',
+39 verbose headers   connection: 'Keep-Alive' }
+40 error publish Failed PUT 403
+41 error Error: forbidden cannot modify pre-existing version: 0.2.0
+41 error old={"name":"squirejs","main":"./src/Squire","devDependencies":{"grunt-mocha":"~0.4.7","grunt":"~0.4.2","grunt-contrib-jshint":"~0.7.2","grunt-contrib-watch":"~0.5.3"},"version":"0.2.0","author":{"name":"Merrick Christensen","email":"merrick.christensen@gmail.com","url":"http://www.merrickchristensen.com/"},"contributors":[{"name":"Jamison Dance","email":"jergason@gmail.com","url":"http://jamisondance.com"}],"description":"Squire.js is a dependency injector for Require.js users to make mocking dependencies easy!","_id":"squirejs@0.2.0","dist":{"shasum":"ec80bfea0675b97159832224d380bddb65ac6c1d","tarball":"http://registry.npmjs.org/squirejs/-/squirejs-0.2.0.tgz"},"_from":".","_npmVersion":"1.3.24","_npmUser":{"name":"iammerrick","email":"merrick.christensen@gmail.com"},"maintainers":[{"name":"iammerrick","email":"merrick.christensen@gmail.com"}]}
+41 error new={"name":"squirejs","main":"./src/Squire","devDependencies":{"grunt-mocha":"~0.4.7","grunt":"~0.4.2","grunt-contrib-jshint":"~0.7.2","grunt-contrib-watch":"~0.5.3"},"repository":{"type":"git","url":"git://github.com/iammerrick/Squire.js"},"version":"0.2.0","author":{"name":"Merrick Christensen","email":"merrick.christensen@gmail.com","url":"http://www.merrickchristensen.com/"},"contributors":[{"name":"Jamison Dance","email":"jergason@gmail.com","url":"http://jamisondance.com"}],"readme":"# Squire.js\u000a\u000aSquire.js is a dependency injector for Require.js users to make mocking dependencies easy!\u000a\u000a![Squire.js - The Squire](http://f.cl.ly/items/0r1a131K3H0X1k0d0e18/Squire.png)\u000a\u000a## Installation\u000a\u000a\u000a### Bower\u000a```\u000abower install squire\u000a```\u000a\u000a### NPM\u000a```\u000anpm install squirejs\u000a```\u000a\u000a## API\u000a\u000a### constructor\u000a\u000aFirst you have to load Squire in, just like any other Require.js module. Beyond this example the rest of the documentation will assume you already loaded Squire   as a module dependency.\u000a\u000a#### Default Configuration\u000a\u000a```javascript\u000adefine(['Squire'], function(Squire) {\u000a  var injector = new Squire();\u000a});\u000a```\u000a\u000a#### Different Context\u000a\u000a```javascript\u000avar injector = new Squire('other-requirejs-context');\u000a```\u000a\u000a### require(Array dependencies, Function callback, Function errback)\u000a\u000a```javascript\u000avar injector = new Squire();\u000ainjector.require(['utilities/Calculator'], function(Calculator) {\u000a  // Calculator has been loaded.\u000a},\u000afunction(err) {\u000a  // Calculator threw an error loading.\u000a});\u000a```\u000a\u000a### mock(String name | Object(name: mock), Object mock)\u000a\u000aThe mock method lets you pass in mocks to be used for a given modules dependency. The first argument is the module name, the second argument is the mock itself. For multiple mocks you can pass an object, the objects key will be the path and the corresponding value will be used as the mock.\u000a\u000a```javascript\u000avar injector = new Squire();\u000a\u000a// Key value mocking.\u000ainjector.mock(dependencyName, mockForDependency);\u000a\u000a// You can pass an object literal as well.\u000ainjector.mock(dependencyNameAndMock);\u000a```\u000a\u000a```javascript\u000avar injector = new Squire();\u000ainjector.mock('CrazyCalculatorDependency', {\u000a    sin: 10\u000a  })\u000a  .require(['utilities/Calculator'], function(Calculator) {\u000a    // The Calculators dependency 'CrazyCalculatorDependency' has been mocked to\u000a    // use the object literal { sin: 10 } that we passed in.\u000a  });\u000a```\u000a\u000a### store(String name | Array names)\u000a\u000aThe store method allows you to get a pointer back to a dependency so you can stub it.\u000a\u000a```javascript\u000avar injector = new Squire();\u000ainjector\u000a  .store('CrazyCalculatorDependency')\u000a  .require(['utilities/Calculator', 'mocks'], function(Calculator, mocks) {\u000a    // mocks.store.CrazyCalculatorDependency is the Calculators dependency, you can\u000a    // manipulate it or stub it with Sinon now.\u000a  });\u000a```\u000a\u000a### clean(Optional (String name | Array names))\u000a\u000aThe clean method allows you to remove mocks by name from your Squire instance, or remove all mocks.\u000a\u000a```javascript\u000avar injector = new Squire();\u000ainjector.mock('something', { other: 'mock'});\u000a\u000a// You do stuff but want to be able to get the real 'something' now.\u000ainjector.clean('something');\u000a\u000a// Or a collection of mocks\u000ainjector.clean(['something', 'something/else']);\u000a```\u000a\u000aOr clean out all the mocks stored in a Squire instance.\u000a\u000a```javascript\u000ainjector.clean();\u000a```\u000a\u000a### remove()\u000a\u000aRemove all the dependencies loaded by this instance of Squire.\u000a\u000a```javascript\u000ainjector.remove();\u000a```\u000a\u000a### run()\u000a\u000aRun generates a function that will receive a done callback and execute it after your test function is complete. Particularly useful for frameworks where asynchrony is handled with a callback. Here is an example with Mocha.js. Jasmine can offer this callback approach using [Jasmin.Async](http://lostechies.com/derickbailey/2012/08/18/jasmine-async-making-asynchronous-testing-with-jasmine-suck-less/).\u000a\u000a```javascript\u000ait('should execute this test using run', injector.run(['mocks/Shirt'], function(Shirt) {\u000a  Shirt.color.should.equal('Red');\u000a}));\u000a```\u000a\u000a## Utilities\u000a\u000aSquire.js offers a few helper functions to ease pains associated with mocking and testing AMD modules.\u000a\u000a### Squire.Helpers.returns(Any what)\u000a\u000aCreate a mock that returns mockViewInstance\u000a\u000a```javascript\u000ainjector.mock('Views/AwesomeView', Squire.Helpers.returns(mockViewInstance));\u000a```\u000a\u000a### Squire.Helpers.constructs(Any what)\u000a\u000aOften times AMD modules return constructor functions which means that mocking such a class would end up having to create a function that returns a function that returns your mocked instance. Squire.js eases that pain by wrapping up your instance for you.\u000a\u000a```javascript\u000ainjector.mock('Views/AwesomeView', Squire.Helpers.constructs(mockViewInstance));\u000a```\u000a\u000aNow any module that uses `Views/AwesomeView` as a constructor dependency will use get your mock instead:\u000a\u000a```javascript\u000a// when invoked with in an Squire.injector.require call\u000avar awesome = new AwesomeView(); // awesome now gets your mockViewInstance\u000a```\u000a\u000a## Credits\u000a\u000aIllustration by Adam Christiansen\u000a","readmeFilename":"README.md","gitHead":"b96f5fa8c83c702df84a94c3d3ef4c930dc6eca9","description":"Squire.js is a dependency injector for Require.js users to make mocking dependencies easy!","bugs":{"url":"https://github.com/iammerrick/Squire.js/issues"},"homepage":"https://github.com/iammerrick/Squire.js","_id":"squirejs@0.2.0","scripts":{},"_shasum":"9779065d0f8d4e07cb7cb47d35b22bb4abfd4370","_from":".","_npmVersion":"1.4.28","_npmUser":{"name":"iammerrick","email":"merrick.christensen@gmail.com"},"maintainers":[{"name":"iammerrick","email":"merrick.christensen@gmail.com"}],"dist":{"shasum":"9779065d0f8d4e07cb7cb47d35b22bb4abfd4370","tarball":"http://registry.npmjs.org/squirejs/-/squirejs-0.2.0.tgz"}}: squirejs
+41 error     at RegClient.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:308:14)
+41 error     at Request._callback (/usr/local/lib/node_modules/npm/node_modules/npm-registry-client/lib/request.js:246:65)
+41 error     at Request.self.callback (/usr/local/lib/node_modules/npm/node_modules/request/request.js:236:22)
+41 error     at Request.emit (events.js:98:17)
+41 error     at Request.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1142:14)
+41 error     at Request.emit (events.js:117:20)
+41 error     at IncomingMessage.<anonymous> (/usr/local/lib/node_modules/npm/node_modules/request/request.js:1096:12)
+41 error     at IncomingMessage.emit (events.js:117:20)
+41 error     at _stream_readable.js:943:16
+41 error     at process._tickCallback (node.js:419:13)
+42 error If you need help, you may report this *entire* log,
+42 error including the npm and node versions, at:
+42 error     <http://github.com/npm/npm/issues>
+43 error System Darwin 14.1.0
+44 error command "/usr/local/bin/node" "/usr/local/bin/npm" "publish"
+45 error cwd /Users/Merrick/Developer/JavaScript/Squire.js
+46 error node -v v0.10.33
+47 error npm -v 1.4.28
+48 verbose exit [ 1, true ]
