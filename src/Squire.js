@@ -111,7 +111,7 @@ define(function() {
     }
 
     each(context.config, function(property, key) {
-      if (key !== 'deps') {
+      if (['deps', 'callback'].indexOf(key) === -1) {
         configuration[key] = property;
       }
     });
