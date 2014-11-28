@@ -88,7 +88,7 @@ define(['Squire'], function(Squire) {
           done();
         });
 
-        squire.require(['mocks/Shirt'], function (shirt) {});
+        squire.require(['mocks/Shirt'], function () {});
       });
       
       it('should call onRequired hooks with the proper arguments', function(done) {
@@ -108,7 +108,7 @@ define(['Squire'], function(Squire) {
           done();
         });
       
-        squire.require(['mocks/Shirt'], function (shirt) {});
+        squire.require(['mocks/Shirt'], function () {});
       });
 
       it('should call an errback when a dependency throws an error', function(done) {
@@ -191,7 +191,7 @@ define(['Squire'], function(Squire) {
             color: 'Purple',
             size: 'Medium'
           })
-          .require(['mocks/CJSOutfit'], function(Outfit) {
+          .require(['mocks/CJSOutfit'], function() {
             require(['mocks/CJSOutfit'], function(NotTheMock) {
               NotTheMock.shirt.color.should.equal('Red');
               done();

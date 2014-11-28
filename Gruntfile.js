@@ -19,6 +19,7 @@ module.exports = function(grunt) {
         strict: false,
         trailing: true,
         browser: true,
+        unused: true,
         node: true,
         globals: {
           define: true,
