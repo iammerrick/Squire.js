@@ -65,6 +65,32 @@ define(function() {
     
     return context.require.undef(module);
   };
+
+  /**
+   * Copy the specified RequireJS context into a new RequireJS context whose name is given by the second argument.
+   *
+   * @param srcId {String} The context to copy the configuration from.
+   * @param destId {String} The name of the new copied context.
+   * @returns {Function} The result of requirejs.config; this should be the localRequire method from RequireJS.
+   */
+  var copyRequireJSContext = function(srcId, destId) {
+    var configuration = {},
+        srcContext = getContext(srcId);
+
+    if ( ! srcContext) {
+      throw new Error('This context has not been created!');
+    }
+
+    each(srcContext.config, function(property, key) {
+      if (key !== 'deps') {
+        configuration[key] = property;
+      }
+    });
+
+    configuration.context = destId;
+
+    return requirejs.config(configuration);
+  };
   
   /**
    * Create a context name incrementor.
@@ -75,11 +101,13 @@ define(function() {
     return 'context' + id;
   };
 
-  var Squire = function() {
+  var Squire = function(context) {
     this.mocks = {};
     this._store = [];
     this.requiredCallbacks = [];
-    this.configure.apply(this, arguments);
+    this.id = uniqueId();
+    this.srcContextId = (typeof context === 'undefined') ? '_' : context; // Default require.js context
+    this.load = copyRequireJSContext(this.srcContextId, this.id);
   };
 
   /**
@@ -87,38 +115,6 @@ define(function() {
    */
   Squire.prototype.onRequired = function(cb) {
     this.requiredCallbacks.push(cb);
-  };
-
-  /**
-   * Configuration of Squire.js, called from constructor or manually takes the
-   * name of a require.js context to configure it.
-   */
-  Squire.prototype.configure = function(context) {
-    var configuration = {};
-    var property;
-
-    this.id = uniqueId();
-
-    // Default the context
-    if (typeof context === 'undefined') {
-      context = '_'; // Default require.js context
-    }
-
-    context = getContext(context);
-
-    if ( ! context) {
-      throw new Error('This context has not been created!');
-    }
-
-    each(context.config, function(property, key) {
-      if (key !== 'deps') {
-        configuration[key] = property;
-      }
-    });
-
-    configuration.context = this.id;
-
-    this.load = requirejs.config(configuration);
   };
 
   Squire.prototype.mock = function(path, mock) {
@@ -215,6 +211,10 @@ define(function() {
     }, this);
     
     delete requirejs.s.contexts[this.id];
+
+    // Now build the context back...
+    // This is what was causing #34
+    this.load = copyRequireJSContext(this.srcContextId, this.id);
   };
   
   Squire.prototype.run = function(deps, callback) {

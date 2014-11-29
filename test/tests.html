@@ -13,7 +13,7 @@
       mocha.setup('bdd');
       chai.should();
       require(['config'], function() {
-        require(['tests/SquireTests'], function() {
+        require(['tests/SquireTests', 'tests/RemoveTests'], function() {
           mocha.run();
         });
       });

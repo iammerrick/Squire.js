@@ -4,5 +4,5 @@ requirejs.config({
     tests: '../test/tests',
     mocks: '../test/mocks'
   },
-  deps: ['tests/DepsRun']
+  deps: ['tests/DepsRun', 'tests/RemoveTests']
 });

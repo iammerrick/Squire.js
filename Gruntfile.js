@@ -27,7 +27,9 @@ module.exports = function(grunt) {
           describe: true,
           it: true,
           mocha: true,
-          chai: true
+          chai: true,
+          beforeEach: true,
+          afterEach: true
         }
       },
       files: [
