@@ -161,7 +161,7 @@ define(function() {
     }
     
     each(this.mocks, function(mock, path) {
-      define(path, mock);
+      define(path,[], mock);
     });
 
     this.load(dependencies, function() {
