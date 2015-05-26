@@ -1,5 +1,24 @@
-define(function() {
-  
+;(function (root, dependencies, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory.apply(this, dependencies.map(require));
+  } else {
+    // Browser globals (root is window)
+    root.returnExports = factory.apply(this, dependencies.map(function(module){return(root[module]);}));
+  }
+}(this, ['requirejs'], function (requirejsLoaded) {
+  if (typeof requirejs !== 'function') {
+    requirejs = requirejsLoaded;
+  }
+  if (typeof define !== 'function') {
+    define = requirejs.define;
+  }
+
   /**
    * Utility Functions
    */
@@ -254,4 +273,4 @@ define(function() {
   };
 
   return Squire;
-});
+}));
