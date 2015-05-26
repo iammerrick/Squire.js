@@ -1,5 +1,15 @@
 /*jshint expr:true */
-define(['Squire'], function(Squire) {
+;(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(['Squire'], factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory(require('../../src/Squire'));
+  }
+}(function (Squire) {
   describe('Squire', function() {
     describe('constructor', function() {
       it('should create an instance of Squire', function() {
@@ -192,7 +202,7 @@ define(['Squire'], function(Squire) {
             size: 'Medium'
           })
           .require(['mocks/CJSOutfit'], function(Outfit) {
-            require(['mocks/CJSOutfit'], function(NotTheMock) {
+            requirejs(['mocks/CJSOutfit'], function(NotTheMock) {
               NotTheMock.shirt.color.should.equal('Red');
               done();
             });
@@ -317,4 +327,4 @@ define(['Squire'], function(Squire) {
       });
     });
   });
-});
+}));

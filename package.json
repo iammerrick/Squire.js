@@ -8,7 +8,9 @@
     "grunt-mocha": "~0.4.7",
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.7.2",
-    "grunt-contrib-watch": "~0.5.3"
+    "grunt-contrib-watch": "~0.5.3",
+    "chai": "2.3.0",
+    "grunt-mocha-test": "0.12.7"
   },
   "repository": {
     "type": "git",
