@@ -1,6 +1,9 @@
 {
   "name": "squirejs",
   "main": "./src/Squire",
+  "dependencies": {
+    "requirejs": "^2.1.2"
+  },
   "devDependencies": {
     "grunt-mocha": "~0.4.7",
     "grunt": "~0.4.2",
