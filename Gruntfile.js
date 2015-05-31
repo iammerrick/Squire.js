@@ -26,6 +26,7 @@ module.exports = function(grunt) {
           require: true,
           describe: true,
           it: true,
+          before: true,
           mocha: true,
           chai: true
         }

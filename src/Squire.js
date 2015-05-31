@@ -12,11 +12,13 @@
     root.returnExports = factory.apply(this, dependencies.map(function(module){return(root[module]);}));
   }
 }(this, ['requirejs'], function (requirejsLoaded) {
-  if (typeof requirejs !== 'function') {
-    requirejs = requirejsLoaded;
-  }
-  if (typeof define !== 'function') {
-    define = requirejs.define;
+  var rqjs, def;
+  if (typeof define === 'function' && define.amd) {
+    rqjs = requirejs;
+    def = define;
+  } else {
+    rqjs = requirejsLoaded;
+    def = rqjs.define;
   }
 
   /**
@@ -49,7 +51,7 @@
     if (obj === null) {
       return;
     }
-    
+
     if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
       obj.forEach(iterator, context);
     } else if (obj.length === +obj.length) {
@@ -74,7 +76,7 @@
    */
   
   var getContext = function(id) {
-    return requirejs.s.contexts[id];
+    return rqjs.s.contexts[id];
   };
   
   var undef = function(context, module) {
@@ -137,7 +139,7 @@
 
     configuration.context = this.id;
 
-    this.load = requirejs.config(configuration);
+    this.load = rqjs.config(configuration);
   };
 
   Squire.prototype.mock = function(path, mock) {
@@ -180,7 +182,7 @@
     }
     
     each(this.mocks, function(mock, path) {
-      define(path, mock);
+      def(path, mock);
     });
 
     this.load(dependencies, function() {
@@ -233,7 +235,7 @@
       undef(getContext(this.id), path);
     }, this);
     
-    delete requirejs.s.contexts[this.id];
+    delete rqjs.s.contexts[this.id];
   };
   
   Squire.prototype.run = function(deps, callback) {
