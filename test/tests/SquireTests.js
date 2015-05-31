@@ -227,10 +227,13 @@
     });
 
     describe('shared squire', function() {
-      var squire = new Squire();
-      squire.mock('mocks/Shirt', {
-        color: 'Green',
-        size: 'XLarge'
+      var squire;
+      before(function(){
+        squire = new Squire();
+        squire.mock('mocks/Shirt', {
+          color: 'Green',
+          size: 'XLarge'
+        });
       });
 
       it('should have a Green shirt', function(done) {
