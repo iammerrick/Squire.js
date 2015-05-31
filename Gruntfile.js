@@ -26,6 +26,7 @@ module.exports = function(grunt) {
           require: true,
           describe: true,
           it: true,
+          before: true,
           mocha: true,
           chai: true
         }
@@ -40,6 +41,11 @@ module.exports = function(grunt) {
     mocha: {
       files: ['test/tests.html', 'test/tests-with-main.html']
     },
+    mochaTest: {
+      "nodeIntegration": {
+        "src": ["test/nodeTest.js"]
+      }
+    },
     watch: {
       test: {
         files: ['test/**/*', 'src/**/*'],
@@ -47,14 +53,15 @@ module.exports = function(grunt) {
       }
     }
   });
-  
+
   grunt.loadNpmTasks('grunt-mocha');
+  grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
   
   /**
    * Register the default task!
    */
-  grunt.registerTask('default', ['jshint', 'mocha']);
+  grunt.registerTask('default', ['jshint', 'mocha', 'mochaTest']);
 
 };

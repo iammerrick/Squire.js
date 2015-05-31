@@ -1,5 +1,26 @@
-define(function() {
-  
+;(function (root, dependencies, factory) {
+  if (typeof define === 'function' && define.amd) {
+    // AMD. Register as an anonymous module.
+    define(factory);
+  } else if (typeof exports === 'object') {
+    // Node. Does not work with strict CommonJS, but
+    // only CommonJS-like environments that support module.exports,
+    // like Node.
+    module.exports = factory.apply(this, dependencies.map(require));
+  } else {
+    // Browser globals (root is window)
+    root.returnExports = factory.apply(this, dependencies.map(function(module){return(root[module]);}));
+  }
+}(this, ['requirejs'], function (requirejsLoaded) {
+  var rqjs, def;
+  if (typeof define === 'function' && define.amd) {
+    rqjs = requirejs;
+    def = define;
+  } else {
+    rqjs = requirejsLoaded;
+    def = rqjs.define;
+  }
+
   /**
    * Utility Functions
    */
@@ -30,7 +51,7 @@ define(function() {
     if (obj === null) {
       return;
     }
-    
+
     if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) {
       obj.forEach(iterator, context);
     } else if (obj.length === +obj.length) {
@@ -55,7 +76,7 @@ define(function() {
    */
   
   var getContext = function(id) {
-    return requirejs.s.contexts[id];
+    return rqjs.s.contexts[id];
   };
   
   var undef = function(context, module) {
@@ -118,7 +139,7 @@ define(function() {
 
     configuration.context = this.id;
 
-    this.load = requirejs.config(configuration);
+    this.load = rqjs.config(configuration);
   };
 
   Squire.prototype.mock = function(path, mock) {
@@ -161,7 +182,7 @@ define(function() {
     }
     
     each(this.mocks, function(mock, path) {
-      define(path, mock);
+      def(path, mock);
     });
 
     this.load(dependencies, function() {
@@ -214,7 +235,7 @@ define(function() {
       undef(getContext(this.id), path);
     }, this);
     
-    delete requirejs.s.contexts[this.id];
+    delete rqjs.s.contexts[this.id];
   };
   
   Squire.prototype.run = function(deps, callback) {
@@ -254,4 +275,4 @@ define(function() {
   };
 
   return Squire;
-});
+}));
