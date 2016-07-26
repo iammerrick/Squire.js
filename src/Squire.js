@@ -221,8 +221,12 @@ define(function() {
     var self = this;
     var run = function(done) {
       self.require(deps, function() {
-        callback.apply(null, arguments);
-        done();
+        try{
+          callback.apply(null, arguments);
+          done();
+        }catch(err){
+          done(err);
+        }
       });
     };
     
