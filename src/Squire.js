@@ -157,6 +157,8 @@ define(function() {
     magicModuleLocation = indexOf(dependencies, magicModuleName);
 
     if (magicModuleLocation !== -1) {
+      // Copy first so the caller's array still contains 'mocks' next time
+      dependencies = dependencies.slice();
       dependencies.splice(magicModuleLocation, 1);
     }
     
