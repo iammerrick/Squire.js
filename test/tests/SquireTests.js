@@ -82,6 +82,18 @@ define(['Squire'], function(Squire) {
           });
       });
 
+      it('should not remove the magic module from the dependencies passed in', function(done) {
+        var squire = new Squire();
+        var deps = ['mocks/Outfit', 'mocks'];
+        squire.require(deps, function(Outfit, mocks) {
+          deps.should.eql(['mocks/Outfit', 'mocks']);
+          squire.require(deps, function(Outfit, mocks) {
+            mocks.should.have.property('mocks');
+            done();
+          });
+        });
+      });
+
       it('should call any onRequired hooks', function(done) {
         var squire = new Squire();
         squire.onRequired(function() {
